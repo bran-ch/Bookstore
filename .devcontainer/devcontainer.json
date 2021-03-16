@@ -1,0 +1,28 @@
+// For format details, see https://aka.ms/vscode-remote/devcontainer.json or the definition README at
+// https://github.com/microsoft/vscode-dev-containers/tree/master/containers/azure-functions-python-3
+{
+	"name": "[Debian] Bookstore Dev",
+	"dockerComposeFile": "docker-compose.yml",
+	"workspaceFolder": "/workspaces",
+	"service": "dev",
+	"settings": {
+		"terminal.integrated.shell.linux": "/bin/bash"
+	},
+	"runArgs": [
+		"--env-file",
+		".devcontainer/devcontainer.env"
+	],
+	// Add the IDs of extensions you want installed when the container is created in the array below.
+	"extensions": [
+		// Azure Tools
+		"ms-azuretools.vscode-azurefunctions",
+		// Docker
+		"ms-azuretools.vscode-docker",
+		// Python
+		"ms-python.python",
+		// Core Utils
+		"shardulm94.trailing-spaces",
+		// Style
+		"vscode-icons-team.vscode-icons",
+	]
+}

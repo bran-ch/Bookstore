@@ -20,7 +20,6 @@ namespace BookstoreApi.Mappings
             ;
 
             CreateMap<BookModel, BookDetailEntity>()
-                .ForMember(e => e.BookId, m => m.MapFrom(b => b.BookId))
                 .ForMember(e => e.Description, m => m.MapFrom(b => b.Description))
                 .ForMember(e => e.ImagePath, m => m.MapFrom(b => b.ImagePath))
                 .ForMember(e => e.Price, m => m.MapFrom(b => b.Price))

@@ -49,11 +49,12 @@ namespace BookstoreApi
 
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBookContext dbContext)
         {
             if (env.EnvironmentName == "Development")
             {
+                // Ensure that data is seeded
+                ((BookstoreContext)dbContext).Database.EnsureCreated();
                 app.UseDeveloperExceptionPage();
             }
 

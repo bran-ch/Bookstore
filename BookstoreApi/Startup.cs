@@ -12,19 +12,31 @@ namespace BookstoreApi
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public Startup(IWebHostEnvironment environment, IConfiguration configuration)
         {
+            Environment = environment;
             Configuration = configuration;
         }
 
+        public IWebHostEnvironment Environment { get; }
+
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+
         public void ConfigureServices(IServiceCollection services)
         {
-            var inMemoryDatabaseName = "Bookstore";
-            services.AddDbContext<IBookContext, BookstoreContext>(opt => opt.UseInMemoryDatabase(inMemoryDatabaseName));
-            services.AddDbContext<IAuthorContext, BookstoreContext>(opt => opt.UseInMemoryDatabase(inMemoryDatabaseName));
+            // If development, then Use an in memory DB
+            if (Environment.IsDevelopment())
+            {
+                var inMemoryDatabaseName = "Bookstore";
+                services.AddDbContext<IBookContext, BookstoreContext>(opt => opt.UseInMemoryDatabase(inMemoryDatabaseName));
+                services.AddDbContext<IAuthorContext, BookstoreContext>(opt => opt.UseInMemoryDatabase(inMemoryDatabaseName));
+            }
+            else
+            {
+                services.AddDbContext<IBookContext, BookstoreContext>();
+                services.AddDbContext<IAuthorContext, BookstoreContext>();
+            }
 
             services.AddControllers();
 
@@ -40,7 +52,7 @@ namespace BookstoreApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            if (env.EnvironmentName == "Development")
             {
                 app.UseDeveloperExceptionPage();
             }

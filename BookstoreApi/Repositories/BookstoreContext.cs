@@ -15,6 +15,11 @@ namespace BookstoreApi.Repositories
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.HasSeedData();
+        }
+
         public void CreateBook(BookEntity book)
         {
             Books.Add(book);

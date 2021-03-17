@@ -12,12 +12,6 @@ namespace BookstoreApi.Repositories
 
         protected DbSet<BookEntity> Books { get; set; }
 
-        protected DbSet<BookDetailEntity> BookDetails { get; set; }
-
         protected DbSet<AuthorEntity> Authors { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-        }
     }
 }

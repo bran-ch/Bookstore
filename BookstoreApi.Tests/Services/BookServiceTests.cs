@@ -1,8 +1,9 @@
+using System.Collections.Generic;
+using System.Linq;
 using AutoFixture;
 using AutoMapper;
 using BookstoreApi.Entities;
 using BookstoreApi.Mappings;
-using BookstoreApi.Models;
 using BookstoreApi.Repositories;
 using BookstoreApi.Services;
 using Microsoft.Extensions.Logging;
@@ -14,7 +15,7 @@ namespace BookstoreApi.Tests
     [TestFixture]
     public class BookServiceTests
     {
-        private Fixture _fixture = new Fixture();
+        private static readonly Fixture _fixture = new Fixture();
 
         private Mock<IBookstoreContext> _mockBookContext;
 
@@ -48,7 +49,7 @@ namespace BookstoreApi.Tests
 
             _mockBookContext.Setup(m => m.FindBook(bookId)).Returns(bookEntity);
 
-            _sut = new BookService(_mockBookContext.Object, _mockLogger.Object);
+            _sut = new BookService(_mockBookContext.Object, _mapper, _mockLogger.Object);
 
             // Act
             var book = _sut.GetBook(bookId);
@@ -56,6 +57,32 @@ namespace BookstoreApi.Tests
             // Assert
             Assert.IsNotNull(book);
             Assert.AreEqual(book.Title, bookTitle);
+        }
+
+        [Test]
+        public void GetAllBooksTest()
+        {
+            // Arrange
+            var bookEntities = new List<BookEntity>
+            {
+                new BookEntity { BookId = _fixture.Create<int>(), Title = _fixture.Create<string>() },
+                new BookEntity { BookId = _fixture.Create<int>(), Title = _fixture.Create<string>() },
+            };
+
+            _mockBookContext.Setup(m => m.SearchBooks()).Returns(bookEntities);
+
+            _sut = new BookService(_mockBookContext.Object, _mapper, _mockLogger.Object);
+
+            // Act
+            var books = _sut.GetBooks();
+
+            // Assert
+            Assert.IsNotNull(books);
+            Assert.AreEqual(bookEntities.Count, books.Count(), "Expected equal number of books");
+            Assert.Contains(
+                bookEntities.Select(e => e.BookId),
+                books.Select(b => b.BookId).ToList(),
+                "Expected returned books to be contained in DB");
         }
     }
 }

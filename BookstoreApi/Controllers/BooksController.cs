@@ -67,7 +67,15 @@ namespace BookstoreApi.Controllers
                 return BadRequest();
             }
 
-            _bookService.UpdateBook(bookId, bookModel);
+            try
+            {
+                _bookService.UpdateBook(bookId, bookModel);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.StackTrace);
+                return Problem("Error", null, (int)HttpStatusCode.InternalServerError);
+            }
 
             return NoContent();
         }

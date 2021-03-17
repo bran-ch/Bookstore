@@ -25,6 +25,12 @@ namespace BookstoreApi.Repositories
         public void DeleteBook(int bookId)
         {
             var found = Books.Where(b => b.BookId == bookId).FirstOrDefault();
+
+            if (found is null)
+            {
+                return;
+            }
+
             Books.Remove(found);
 
             SaveChanges();

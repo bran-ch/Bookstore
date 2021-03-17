@@ -17,7 +17,7 @@ namespace BookstoreApi.Tests
     {
         private static readonly Fixture _fixture = new Fixture();
 
-        private Mock<IBookstoreContext> _mockBookContext;
+        private Mock<IBookContext> _mockBookContext;
 
         private IMapper _mapper;
 
@@ -28,7 +28,7 @@ namespace BookstoreApi.Tests
         [OneTimeSetUp]
         public void SetUpClass()
         {
-            _mockBookContext = new Mock<IBookstoreContext>();
+            _mockBookContext = new Mock<IBookContext>();
             _mapper = MappingProfileConfiguration.InitializeAutoMapper().CreateMapper();
             _mockLogger = new Mock<ILogger<BookService>>();
         }

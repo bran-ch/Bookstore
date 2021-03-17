@@ -9,15 +9,15 @@ namespace BookstoreApi.Services
 {
     public class BookService : IBookService
     {
-        private readonly IBookstoreContext _bookstoreContext;
+        private readonly IBookContext _bookContext;
 
         private readonly IMapper _mapper;
 
         private readonly ILogger<BookService> _logger;
 
-        public BookService(IBookstoreContext bookstoreContext, IMapper mapper, ILogger<BookService> logger)
+        public BookService(IBookContext bookContext, IMapper mapper, ILogger<BookService> logger)
         {
-            _bookstoreContext = bookstoreContext;
+            _bookContext = bookContext;
             _mapper = mapper;
             _logger = logger;
         }
@@ -26,17 +26,17 @@ namespace BookstoreApi.Services
         {
             var bookEntity = _mapper.Map<BookEntity>(bookModel);
 
-            _bookstoreContext.CreateBook(bookEntity);
+            _bookContext.CreateBook(bookEntity);
         }
 
         public void DeleteBook(int bookId)
         {
-            _bookstoreContext.DeleteBook(bookId);
+            _bookContext.DeleteBook(bookId);
         }
 
         public BookModel GetBook(int bookId)
         {
-            var bookEntity = _bookstoreContext.FindBook(bookId);
+            var bookEntity = _bookContext.FindBook(bookId);
 
             var bookModel = _mapper.Map<BookModel>(bookEntity);
 
@@ -45,7 +45,7 @@ namespace BookstoreApi.Services
 
         public IEnumerable<BookModel> GetBooks()
         {
-            var bookEntities = _bookstoreContext.SearchBooks();
+            var bookEntities = _bookContext.SearchBooks();
 
             var bookModels = _mapper.Map<IEnumerable<BookModel>>(bookEntities);
 
@@ -56,7 +56,7 @@ namespace BookstoreApi.Services
         {
             var bookEntity = _mapper.Map<BookEntity>(bookModel);
 
-            _bookstoreContext.UpdateBook(bookId, bookEntity);
+            _bookContext.UpdateBook(bookId, bookEntity);
         }
     }
 }

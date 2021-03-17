@@ -14,9 +14,9 @@ namespace BookstoreApi.Controllers
     {
         private readonly IAuthorService _authorService;
 
-        private readonly ILogger<BooksController> _logger;
+        private readonly ILogger<AuthorsController> _logger;
 
-        public BooksController(IAuthorService authorService, ILogger<AuthorsController> logger)
+        public AuthorsController(IAuthorService authorService, ILogger<AuthorsController> logger)
         {
             _authorService = authorService;
             _logger = logger;
@@ -25,7 +25,7 @@ namespace BookstoreApi.Controllers
         [HttpGet]
         public ActionResult<IEnumerable<AuthorModel>> GetAll()
         {
-            var authors = _authorService.GetBooks();
+            var authors = _authorService.GetAuthors();
 
             return Ok(authors);
         }
@@ -60,14 +60,22 @@ namespace BookstoreApi.Controllers
         }
 
         [HttpPut("{authorId}")]
-        public ActionResult Put(int authorId, [FromBody] AuthorModel AuthorModel)
+        public ActionResult Put(int authorId, [FromBody] AuthorModel authorModel)
         {
-            if (authorId != AuthorModel.authorId)
+            if (authorId != authorModel.AuthorId)
             {
                 return BadRequest();
             }
 
-            _authorService.UpdateAuthor(authorId, AuthorModel);
+            try
+            {
+                _authorService.UpdateAuthor(authorId, authorModel);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.StackTrace);
+                return Problem("Error", null, (int)HttpStatusCode.InternalServerError);
+            }
 
             return NoContent();
         }
@@ -77,7 +85,7 @@ namespace BookstoreApi.Controllers
         {
             try
             {
-                _authorService.DeeteAuthor(authorId);
+                _authorService.DeleteAuthor(authorId);
             }
             catch (Exception e)
             {

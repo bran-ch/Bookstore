@@ -35,6 +35,11 @@ namespace BookstoreApi.Mappings
                 .ForMember(b => b.ImagePath, m => m.MapFrom(e => e.BookDetail.ImagePath))
                 .ForMember(b => b.Price, m => m.MapFrom(e => e.BookDetail.Price))
             ;
+
+
+            // Author
+            CreateMap<AuthorModel, AuthorEntity>();
+            CreateMap<AuthorEntity, AuthorModel>();
         }
     }
 }

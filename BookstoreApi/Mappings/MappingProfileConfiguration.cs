@@ -4,11 +4,11 @@ namespace BookstoreApi.Mappings
 {
     public class MappingProfileConfiguration
     {
-        public static MappingConfiguration InitializeAutoMapper()
+        public static MapperConfiguration InitializeAutoMapper()
         {
             var mp = new MappingProfile();
 
-            var config = new MappingConfiguration(cfg => { cfg.AddProfile(mp); });
+            var config = new MapperConfiguration(cfg => { cfg.AddProfile(mp); });
 
             return config;
         }

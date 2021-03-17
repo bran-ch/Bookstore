@@ -79,9 +79,10 @@ namespace BookstoreApi.Tests
             // Assert
             Assert.IsNotNull(books);
             Assert.AreEqual(bookEntities.Count, books.Count(), "Expected equal number of books");
-            Assert.Contains(
+
+            CollectionAssert.AreEqual(
                 bookEntities.Select(e => e.BookId),
-                books.Select(b => b.BookId).ToList(),
+                books.Select(b => b.BookId),
                 "Expected returned books to be contained in DB");
         }
     }

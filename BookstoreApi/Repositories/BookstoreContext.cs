@@ -5,18 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookstoreApi.Repositories
 {
-    public class BookstoreContext : DbContext, IBookstoreContext
+    public class BookstoreContext :
+        BaseContext,
+        IBookContext,
+        IAuthorContext
     {
         public BookstoreContext(DbContextOptions<BookstoreContext> options)
             : base(options)
         {
         }
-
-        public DbSet<BookEntity> Books { get; set; }
-
-        public DbSet<BookDetailEntity> BookDetails { get; set; }
-
-        public DbSet<AuthorEntity> Authors { get; set; }
 
         public void CreateBook(BookEntity book)
         {
@@ -35,19 +32,85 @@ namespace BookstoreApi.Repositories
 
         public BookEntity FindBook(int bookId)
         {
-            return Books.AsNoTracking()
+            return Books
+                .Include(b => b.BookDetail)
+                .Include(b => b.Author)
+                .AsNoTracking()
                 .Where(b => b.BookId == bookId)
                 .FirstOrDefault();
         }
 
         public IEnumerable<BookEntity> SearchBooks()
         {
-            return Books.AsNoTracking().ToList();
+            return Books
+                .Include(b => b.BookDetail)
+                .Include(b => b.Author)
+                .AsNoTracking()
+                .ToList();
         }
 
         public void UpdateBook(int bookId, BookEntity book)
         {
-            Books.Update(book);
+            var entity = Books
+                .Include(b => b.BookDetail)
+                .Include(b => b.Author)
+                .Where(b => b.BookId == bookId)
+                .FirstOrDefault();
+
+            if (entity is null)
+            {
+                return;
+            }
+
+            entity.Title = book.Title;
+            entity.BookDetail.Description = book.BookDetail.Description;
+            entity.BookDetail.ImagePath = book.BookDetail.ImagePath;
+            entity.BookDetail.Price = book.BookDetail.Price;
+
+            SaveChanges();
+        }
+
+        void IAuthorContext.CreateAuthor(AuthorEntity author)
+        {
+            Authors.Add(author);
+
+            SaveChanges();
+        }
+
+        void IAuthorContext.DeleteAuthor(int authorId)
+        {
+            var found = Authors.Where(b => b.AuthorId == authorId).FirstOrDefault();
+            Authors.Remove(found);
+
+            SaveChanges();
+        }
+
+        AuthorEntity IAuthorContext.FindAuthor(int authorId)
+        {
+            return Authors.AsNoTracking()
+                .Where(a => a.AuthorId == authorId)
+                .FirstOrDefault();
+        }
+
+        IEnumerable<AuthorEntity> IAuthorContext.SearchAuthors()
+        {
+            return Authors
+                .AsNoTracking()
+                .ToList();
+        }
+
+        void IAuthorContext.UpdateAuthor(int authorId, AuthorEntity author)
+        {
+            var entity = Authors
+                .Where(a => a.AuthorId == authorId)
+                .FirstOrDefault();
+
+            if (entity is null)
+            {
+                return;
+            }
+
+            entity.Name = author.Name;
 
             SaveChanges();
         }

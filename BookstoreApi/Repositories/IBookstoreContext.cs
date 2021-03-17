@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using BookstoreApi.Entities;
-using BookstoreApi.Models;
 
 namespace BookstoreApi.Repositories
 {
-    public interface IBookstoreContext
+    public interface IBookContext
     {
         BookEntity FindBook(int bookId);
 

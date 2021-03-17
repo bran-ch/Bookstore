@@ -22,14 +22,18 @@ namespace BookstoreApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<IBookstoreContext, BookstoreContext>(opt => opt.UseInMemoryDatabase("Bookstore"));
+            var inMemoryDatabaseName = "Bookstore";
+            services.AddDbContext<IBookContext, BookstoreContext>(opt => opt.UseInMemoryDatabase(inMemoryDatabaseName));
+            services.AddDbContext<IAuthorContext, BookstoreContext>(opt => opt.UseInMemoryDatabase(inMemoryDatabaseName));
 
             services.AddControllers();
 
             var mapper = MappingProfileConfiguration.InitializeAutoMapper().CreateMapper();
             services.AddSingleton(mapper);
 
-            services.AddTransient<IBookService, BookService>();
+            services
+                .AddTransient<IBookService, BookService>()
+                .AddTransient<IAuthorService, AuthorService>();
 
         }
 
@@ -40,8 +44,6 @@ namespace BookstoreApi
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            app.UseHttpsRedirection();
 
             app.UseRouting();
 

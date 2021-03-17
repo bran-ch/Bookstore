@@ -1,4 +1,4 @@
-namespace BookstoreAPI.Entities
+namespace BookstoreApi.Entities
 {
     public class BookDetailEntity
     {

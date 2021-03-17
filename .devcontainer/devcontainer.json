@@ -18,10 +18,12 @@
 		"ms-azuretools.vscode-azurefunctions",
 		// Docker
 		"ms-azuretools.vscode-docker",
-		// Python
+		// Code Tools
 		"ms-python.python",
+		"ms-dotnettools.csharp",
 		// Core Utils
 		"shardulm94.trailing-spaces",
+		"editorconfig.editorconfig",
 		// Style
 		"vscode-icons-team.vscode-icons",
 	]

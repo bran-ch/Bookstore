@@ -9,7 +9,7 @@
 			"name": "CRUD Books",
 			"item": [
 				{
-					"name": "Update Book",
+					"name": "Create Book",
 					"request": {
 						"method": "POST",
 						"header": [],
@@ -58,7 +58,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n    \"bookId\": 1,\r\n   \"title\": \"A Book\",\r\n    \"description\": \"This is a book\",\r\n    \"author\": \"Brandon Chow the Second\",\r\n    \"imagePath\": \"https://i.imgflip.com/26aes0.jpg\",\r\n    \"price\": 1.98\r\n}",
+							"raw": "{\r\n    \"bookId\": 5,\r\n   \"title\": \"A Book\",\r\n    \"description\": \"This is a book\",\r\n    \"author\": \"Brandon Chow the Second\",\r\n    \"imagePath\": \"https://i.imgflip.com/26aes0.jpg\",\r\n    \"price\": 1.98\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -66,13 +66,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BookstoreUrl}}/books/1",
+							"raw": "{{BookstoreUrl}}/books/5",
 							"host": [
 								"{{BookstoreUrl}}"
 							],
 							"path": [
 								"books",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -93,13 +93,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{BookstoreUrl}}/books/1",
+							"raw": "{{BookstoreUrl}}/books/5",
 							"host": [
 								"{{BookstoreUrl}}"
 							],
 							"path": [
 								"books",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -242,6 +242,327 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Happy Path",
+			"item": [
+				{
+					"name": "1. Create Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const book = pm.response.json()\r",
+									"\r",
+									"pm.collectionVariables.set(\"HappyPath.BookId\", book.bookId);\r",
+									"pm.collectionVariables.set(\"HappyPath.AuthorId\", book.authorId);\r",
+									"\r",
+									"pm.test(\"Book - Create Book\", () => {\r",
+									"    const resp = pm.response.json();\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n   \"title\": \"A Book\",\r\n    \"description\": \"This is a book\",\r\n    \"author\": \"Brandon Chow\",\r\n    \"imagePath\": \"https://i.imgflip.com/26aes0.jpg\",\r\n    \"price\": 1.98\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BookstoreUrl}}/books",
+							"host": [
+								"{{BookstoreUrl}}"
+							],
+							"path": [
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "2. Update Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const book = pm.response.json();\r",
+									"\r",
+									"pm.collectionVariables.set(\"HappyPath.BookTitle\", book.title);"
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"bookId\": {{HappyPath.BookId}},\r\n    \"title\": \"My Book's New Title\",\r\n    \"description\": \"This is a book\",\r\n    \"author\": \"Brandon Chow\",\r\n    \"imagePath\": \"https://i.imgflip.com/26aes0.jpg\",\r\n    \"price\": 7.98\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BookstoreUrl}}/books/{{HappyPath.BookId}}",
+							"host": [
+								"{{BookstoreUrl}}"
+							],
+							"path": [
+								"books",
+								"{{HappyPath.BookId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3. Update Author",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const author = pm.response.json()\r",
+									"\r",
+									"pm.collectionVariables.set(\"HappyPath.AuthorName\", author.name);\r",
+									"\r",
+									"pm.test(\"Author - Update Author\", () => {\r",
+									"    const resp = pm.response.json();\r",
+									"    pm.expect(resp.authorId).to.eql(pm.collectionVariables.get(\"HappyPath.AuthorId\"));\r",
+									"    pm.expect(pm.response.code).to.eql(200);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authorId\": {{HappyPath.AuthorId}},\r\n    \"name\": \"Brandon the Third\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BookstoreUrl}}/authors/{{HappyPath.AuthorId}}",
+							"host": [
+								"{{BookstoreUrl}}"
+							],
+							"path": [
+								"authors",
+								"{{HappyPath.AuthorId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4. Get Author By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Author - Get By Id\", () => {\r",
+									"    const resp = pm.response.json();\r",
+									"    pm.expect(resp.authorId).to.eql(pm.collectionVariables.get(\"HappyPath.AuthorId\"));\r",
+									"    pm.expect(resp.name).to.eql(pm.collectionVariables.get(\"HappyPath.AuthorName\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authorId\": \"{{HappyPath.AuthorId}}\",\r\n    \"name\": \"Brandon the Third\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BookstoreUrl}}/authors/{{HappyPath.AuthorId}}",
+							"host": [
+								"{{BookstoreUrl}}"
+							],
+							"path": [
+								"authors",
+								"{{HappyPath.AuthorId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5. Get Book By Id",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Book - Get By Id\", () => {\r",
+									"    const resp = pm.response.json();\r",
+									"    pm.expect(resp.bookId).to.eql(pm.collectionVariables.get(\"HappyPath.BookId\"));\r",
+									"    pm.expect(resp.title).to.eql(pm.collectionVariables.get(\"HappyPath.BookTitle\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"authorId\": \"{{HappyPath.AuthorId}}\",\r\n    \"name\": \"Brandon the Third\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BookstoreUrl}}/books/{{HappyPath.BookId}}",
+							"host": [
+								"{{BookstoreUrl}}"
+							],
+							"path": [
+								"books",
+								"{{HappyPath.BookId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6. Delete Book",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Book - Delete\", () => {\r",
+									"    const resp = pm.response.json();\r",
+									"    pm.expect(resp.bookId).to.eql(pm.collectionVariables.get(\"HappyPath.BookId\"));\r",
+									"    pm.expect(resp.title).to.eql(pm.collectionVariables.get(\"HappyPath.BookTitle\"));\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BookstoreUrl}}/books/{{HappyPath.BookId}}",
+							"host": [
+								"{{BookstoreUrl}}"
+							],
+							"path": [
+								"books",
+								"{{HappyPath.BookId}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7. Ensure Book was deleted",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Book - Ensure Book was Deleted\", () => {\r",
+									"    const resp = pm.response.json();\r",
+									"    pm.expect(pm.response.status).to.eql(404);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{BookstoreUrl}}/books/{{HappyPath.BookId}}",
+							"host": [
+								"{{BookstoreUrl}}"
+							],
+							"path": [
+								"books",
+								"{{HappyPath.BookId}}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -267,6 +588,22 @@
 	"variable": [
 		{
 			"key": "BookstoreUrl",
+			"value": ""
+		},
+		{
+			"key": "HappyPath.AuthorId",
+			"value": ""
+		},
+		{
+			"key": "HappyPath.BookId",
+			"value": ""
+		},
+		{
+			"key": "HappyPath.BookTitle",
+			"value": ""
+		},
+		{
+			"key": "HappyPath.AuthorName",
 			"value": ""
 		}
 	]

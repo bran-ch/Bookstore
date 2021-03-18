@@ -47,6 +47,7 @@ namespace BookstoreApi
                 .AddTransient<IBookService, BookService>()
                 .AddTransient<IAuthorService, AuthorService>();
 
+            services.AddSwaggerGen();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBookContext dbContext)
@@ -57,6 +58,12 @@ namespace BookstoreApi
                 ((BookstoreContext)dbContext).Database.EnsureCreated();
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "BookstoreApi Api v1");
+            });
 
             app.UseRouting();
 

@@ -41,7 +41,7 @@ Route                       | Description
 `DELETE /authors/{authorId}`| Deletes an author by id
 `GET /books`                | Gets all books
 `GET /books/{bookId}`       | Get a single book by id
-`POST /books`               | Create a book
+`POST /books`               | Create a book. Note that this also creates the Author
 `PUT /books/{bookId}`       | Updates a book by id
 `DELETE /books/{bookId}`    | Deletes a book by id
 

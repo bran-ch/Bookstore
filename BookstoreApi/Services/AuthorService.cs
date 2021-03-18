@@ -22,16 +22,20 @@ namespace BookstoreApi.Services
             _logger = logger;
         }
 
-        public void CreateAuthor(AuthorModel AuthorModel)
+        public AuthorModel CreateAuthor(AuthorModel authorModel)
         {
-            var authorEntity = _mapper.Map<AuthorEntity>(AuthorModel);
+            var authorEntity = _mapper.Map<AuthorEntity>(authorModel);
 
-            _authorContext.CreateAuthor(authorEntity);
+            var created = _authorContext.CreateAuthor(authorEntity);
+
+            return _mapper.Map<AuthorModel>(created);
         }
 
-        public void DeleteAuthor(int authorId)
+        public AuthorModel DeleteAuthor(int authorId)
         {
-            _authorContext.DeleteAuthor(authorId);
+            var deleted = _authorContext.DeleteAuthor(authorId);
+
+            return _mapper.Map<AuthorModel>(deleted);
         }
 
         public AuthorModel GetAuthor(int authorId)
@@ -52,11 +56,13 @@ namespace BookstoreApi.Services
             return AuthorModels;
         }
 
-        public void UpdateAuthor(int bookId, AuthorModel authorModel)
+        public AuthorModel UpdateAuthor(int bookId, AuthorModel authorModel)
         {
             var authorEntity = _mapper.Map<AuthorEntity>(authorModel);
 
-            _authorContext.UpdateAuthor(bookId, authorEntity);
+            var updated = _authorContext.UpdateAuthor(bookId, authorEntity);
+
+            return _mapper.Map<AuthorModel>(updated);
         }
     }
 }

@@ -9,10 +9,10 @@ namespace BookstoreApi.Services
 
         IEnumerable<AuthorModel> GetAuthors();
 
-        void CreateAuthor(AuthorModel authorModel);
+        AuthorModel CreateAuthor(AuthorModel authorModel);
 
-        void UpdateAuthor(int authorId, AuthorModel bookModel);
+        AuthorModel UpdateAuthor(int authorId, AuthorModel bookModel);
 
-        void DeleteAuthor(int authorId);
+        AuthorModel DeleteAuthor(int authorId);
     }
 }

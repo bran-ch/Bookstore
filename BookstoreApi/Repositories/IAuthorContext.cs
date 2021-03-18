@@ -9,10 +9,10 @@ namespace BookstoreApi.Repositories
 
         IEnumerable<AuthorEntity> SearchAuthors();
 
-        void DeleteAuthor(int authorId);
+        AuthorEntity DeleteAuthor(int authorId);
 
-        void CreateAuthor(AuthorEntity author);
+        AuthorEntity CreateAuthor(AuthorEntity author);
 
-        void UpdateAuthor(int authorId, AuthorEntity author);
+        AuthorEntity UpdateAuthor(int authorId, AuthorEntity author);
     }
 }

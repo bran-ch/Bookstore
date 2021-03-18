@@ -22,16 +22,20 @@ namespace BookstoreApi.Services
             _logger = logger;
         }
 
-        public void CreateBook(BookModel bookModel)
+        public BookModel CreateBook(BookModel bookModel)
         {
             var bookEntity = _mapper.Map<BookEntity>(bookModel);
 
-            _bookContext.CreateBook(bookEntity);
+            var created = _bookContext.CreateBook(bookEntity);
+
+            return _mapper.Map<BookModel>(created);
         }
 
-        public void DeleteBook(int bookId)
+        public BookModel DeleteBook(int bookId)
         {
-            _bookContext.DeleteBook(bookId);
+            var deleted = _bookContext.DeleteBook(bookId);
+
+            return _mapper.Map<BookModel>(deleted);
         }
 
         public BookModel GetBook(int bookId)
@@ -52,11 +56,13 @@ namespace BookstoreApi.Services
             return bookModels;
         }
 
-        public void UpdateBook(int bookId, BookModel bookModel)
+        public BookModel UpdateBook(int bookId, BookModel bookModel)
         {
             var bookEntity = _mapper.Map<BookEntity>(bookModel);
 
-            _bookContext.UpdateBook(bookId, bookEntity);
+            var updated = _bookContext.UpdateBook(bookId, bookEntity);
+
+            return _mapper.Map<BookModel>(updated);
         }
     }
 }

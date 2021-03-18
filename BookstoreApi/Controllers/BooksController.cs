@@ -44,23 +44,23 @@ namespace BookstoreApi.Controllers
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] BookModel bookModel)
+        public ActionResult<BookModel> Post([FromBody] BookModel bookModel)
         {
             try
             {
-                _bookService.CreateBook(bookModel);
+                var created = _bookService.CreateBook(bookModel);
+
+                return Ok(created);
             }
             catch (Exception e)
             {
                 _logger.LogError(e.StackTrace);
                 return Problem("Error", null, (int)HttpStatusCode.InternalServerError);
             }
-
-            return StatusCode((int)HttpStatusCode.Created);
         }
 
         [HttpPut("{bookId}")]
-        public ActionResult Put(int bookId, [FromBody] BookModel bookModel)
+        public ActionResult<BookModel> Put(int bookId, [FromBody] BookModel bookModel)
         {
             if (bookId != bookModel.BookId)
             {
@@ -69,31 +69,41 @@ namespace BookstoreApi.Controllers
 
             try
             {
-                _bookService.UpdateBook(bookId, bookModel);
+                var updated = _bookService.UpdateBook(bookId, bookModel);
+
+                if (updated is null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(updated);
             }
             catch (Exception e)
             {
                 _logger.LogError(e.StackTrace);
                 return Problem("Error", null, (int)HttpStatusCode.InternalServerError);
             }
-
-            return NoContent();
         }
 
         [HttpDelete("{bookId}")]
-        public ActionResult Delete(int bookId)
+        public ActionResult<BookModel> Delete(int bookId)
         {
             try
             {
-                _bookService.DeleteBook(bookId);
+                var deleted = _bookService.DeleteBook(bookId);
+
+                if (deleted is null)
+                {
+                    return BadRequest();
+                }
+
+                return Ok(deleted);
             }
             catch (Exception e)
             {
                 _logger.LogError(e.StackTrace);
                 return Problem("Error", null, (int)HttpStatusCode.InternalServerError);
             }
-
-            return NoContent();
         }
     }
 }

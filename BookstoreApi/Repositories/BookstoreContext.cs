@@ -20,25 +20,29 @@ namespace BookstoreApi.Repositories
             modelBuilder.HasSeedData();
         }
 
-        public void CreateBook(BookEntity book)
+        public BookEntity CreateBook(BookEntity book)
         {
             Books.Add(book);
 
             SaveChanges();
+
+            return book;
         }
 
-        public void DeleteBook(int bookId)
+        public BookEntity DeleteBook(int bookId)
         {
             var found = Books.Where(b => b.BookId == bookId).FirstOrDefault();
 
             if (found is null)
             {
-                return;
+                return null;
             }
 
             Books.Remove(found);
 
             SaveChanges();
+
+            return found;
         }
 
         public BookEntity FindBook(int bookId)
@@ -60,7 +64,7 @@ namespace BookstoreApi.Repositories
                 .ToList();
         }
 
-        public void UpdateBook(int bookId, BookEntity book)
+        public BookEntity UpdateBook(int bookId, BookEntity book)
         {
             var entity = Books
                 .Include(b => b.BookDetail)
@@ -70,7 +74,7 @@ namespace BookstoreApi.Repositories
 
             if (entity is null)
             {
-                return;
+                return null;
             }
 
             entity.Title = book.Title;
@@ -79,38 +83,50 @@ namespace BookstoreApi.Repositories
             entity.BookDetail.Price = book.BookDetail.Price;
 
             SaveChanges();
+
+            return entity;
         }
 
-        void IAuthorContext.CreateAuthor(AuthorEntity author)
+        public AuthorEntity CreateAuthor(AuthorEntity author)
         {
             Authors.Add(author);
 
             SaveChanges();
+
+            return author;
         }
 
-        void IAuthorContext.DeleteAuthor(int authorId)
+        public AuthorEntity DeleteAuthor(int authorId)
         {
             var found = Authors.Where(b => b.AuthorId == authorId).FirstOrDefault();
+
+            if (found is null)
+            {
+                return null;
+            }
+
             Authors.Remove(found);
 
             SaveChanges();
+
+            return found;
         }
 
-        AuthorEntity IAuthorContext.FindAuthor(int authorId)
+        public AuthorEntity FindAuthor(int authorId)
         {
             return Authors.AsNoTracking()
                 .Where(a => a.AuthorId == authorId)
                 .FirstOrDefault();
         }
 
-        IEnumerable<AuthorEntity> IAuthorContext.SearchAuthors()
+        public IEnumerable<AuthorEntity> SearchAuthors()
         {
             return Authors
                 .AsNoTracking()
                 .ToList();
         }
 
-        void IAuthorContext.UpdateAuthor(int authorId, AuthorEntity author)
+        public AuthorEntity UpdateAuthor(int authorId, AuthorEntity author)
         {
             var entity = Authors
                 .Where(a => a.AuthorId == authorId)
@@ -118,12 +134,14 @@ namespace BookstoreApi.Repositories
 
             if (entity is null)
             {
-                return;
+                return null;
             }
 
             entity.Name = author.Name;
 
             SaveChanges();
+
+            return entity;
         }
     }
 }

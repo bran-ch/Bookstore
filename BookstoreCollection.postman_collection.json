@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "8fc22b2e-9e99-4410-aa1e-a7cd231a92c1",
+		"_postman_id": "c5d4bed9-abbb-4872-bf17-cffdd39871be",
 		"name": "BookstoreCollection",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -123,7 +123,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "CRUD Authors",
@@ -241,7 +242,8 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		},
 		{
 			"name": "Happy Path",
@@ -263,7 +265,8 @@
 									"    pm.expect(pm.response.code).to.eql(200);\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"id": "604ebd81-16da-4b0c-b63d-86301b8dd4e9"
 							}
 						}
 					],
@@ -302,7 +305,8 @@
 									"\r",
 									"pm.collectionVariables.set(\"HappyPath.BookTitle\", book.title);"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"id": "816ff7a4-4fda-4bec-9353-600fa3008274"
 							}
 						},
 						{
@@ -311,7 +315,8 @@
 								"exec": [
 									""
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"id": "345f1f8d-5504-476b-a2ae-96f430cfea30"
 							}
 						}
 					],
@@ -357,7 +362,8 @@
 									"    pm.expect(pm.response.code).to.eql(200);\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"id": "d7376501-23e0-4850-9eb2-2263f67922a5"
 							}
 						}
 					],
@@ -399,7 +405,8 @@
 									"    pm.expect(resp.name).to.eql(pm.collectionVariables.get(\"HappyPath.AuthorName\"));\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"id": "80a063a6-d35a-4a33-9e1d-f182cde5be88"
 							}
 						}
 					],
@@ -444,7 +451,8 @@
 									"    pm.expect(resp.title).to.eql(pm.collectionVariables.get(\"HappyPath.BookTitle\"));\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"id": "dd3ecdd5-94f8-45ce-a2af-247331b5146f"
 							}
 						}
 					],
@@ -489,7 +497,8 @@
 									"    pm.expect(resp.title).to.eql(pm.collectionVariables.get(\"HappyPath.BookTitle\"));\r",
 									"});"
 								],
-								"type": "text/javascript"
+								"type": "text/javascript",
+								"id": "c8aa290d-fc0c-42ae-8941-807071c1e15d"
 							}
 						}
 					],
@@ -524,10 +533,11 @@
 						{
 							"listen": "test",
 							"script": {
+								"id": "ebfbe01d-5554-4ab8-9437-fb49eca37237",
 								"exec": [
 									"pm.test(\"Book - Ensure Book was Deleted\", () => {\r",
 									"    const resp = pm.response.json();\r",
-									"    pm.expect(pm.response.status).to.eql(404);\r",
+									"    pm.expect(pm.response.code).to.eql(404);\r",
 									"});"
 								],
 								"type": "text/javascript"
@@ -562,13 +572,15 @@
 					},
 					"response": []
 				}
-			]
+			],
+			"protocolProfileBehavior": {}
 		}
 	],
 	"event": [
 		{
 			"listen": "prerequest",
 			"script": {
+				"id": "78ef9e4b-b8c0-40bc-bc0f-8fe27f94b7ef",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -578,6 +590,7 @@
 		{
 			"listen": "test",
 			"script": {
+				"id": "e846e1a4-3e56-41d1-bb17-f12f9ef8fd37",
 				"type": "text/javascript",
 				"exec": [
 					""
@@ -587,24 +600,35 @@
 	],
 	"variable": [
 		{
+			"id": "9dafea99-4b1c-4216-8ac2-7dda98ca9dfe",
 			"key": "BookstoreUrl",
-			"value": ""
+			"value": "http://localhost:5000",
+			"type": "string"
 		},
 		{
+			"id": "ce0099f2-8443-4970-b67c-f3484a3ba4d4",
 			"key": "HappyPath.AuthorId",
-			"value": ""
+			"value": "",
+			"type": "string"
 		},
 		{
+			"id": "50e366db-eb58-4d4d-b622-944bd2788697",
 			"key": "HappyPath.BookId",
-			"value": ""
+			"value": "",
+			"type": "string"
 		},
 		{
+			"id": "d4184af5-cf14-45e2-90f8-3c94a473c52d",
 			"key": "HappyPath.BookTitle",
-			"value": ""
+			"value": "",
+			"type": "string"
 		},
 		{
+			"id": "47e52736-cb19-4b92-be77-949dc2ebbc81",
 			"key": "HappyPath.AuthorName",
-			"value": ""
+			"value": "",
+			"type": "string"
 		}
-	]
+	],
+	"protocolProfileBehavior": {}
 }
